@@ -1,3 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 
-# Create your views here.
+def mainpage(request):
+    context = {}
+    return render(request, 'base_app/mainpage.html', context)
