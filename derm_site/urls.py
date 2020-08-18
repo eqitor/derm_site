@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from base_app import views
+from account_management import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('base_app.urls'))
+    path('', include('base_app.urls')),
+    path('', include('account_management.urls')),
 ]

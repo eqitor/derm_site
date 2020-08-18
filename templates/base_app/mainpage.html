@@ -16,7 +16,7 @@
         <!-- Navbar -->
         <section id="nav-bar">
             <nav class="navbar navbar-expand-lg navbar-light">
-                <a class="navbar-brand" href="#">DermSite</a>
+                <a class="navbar-brand" href="{% url 'base_app:mainpage' %}">DermSite</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>
@@ -25,6 +25,17 @@
                     <a class="nav-item nav-link" href="#jumbo">Start</a>
                     <a class="nav-item nav-link" href="#about">O projekcie</a>
                     <a class="nav-item nav-link" href="#option-cards">Funkcje</a>
+                    {% if request.user.is_authenticated %}
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{ request.user }}</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'account_management:logout_user' %}">Wyloguj</a>
+                        </div>
+                    </div>
+                    
+                    {% else %}
+                    <a class="nav-item nav-link" href="{% url 'account_management:login_page' %}">Zaloguj</a>
+                    {% endif %}
                   </div>
                 </div>
               </nav>
@@ -37,7 +48,7 @@
                   <h1>DermSite</h1>      
                   <p>Aplikacja wspierająca wstępną diagnostykę dermatologiczną.</p>
                   <div class="button-container">
-                    <button type="button" class="btn btn-outline-light btn-lg">Dark</button>
+                    <a href="#option-cards"><button type="button" class="btn btn-outline-light btn-lg">Start</button></a>
                   </div>
                   
                 </div>
@@ -156,7 +167,7 @@
               </div>
         </div>
 
-        
+        <!-- Footer -->
         <section id="footer">
             <div class="container text-center">
                 <p>DermSite 2020</p>

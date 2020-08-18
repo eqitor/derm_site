@@ -1,0 +1,36 @@
+{% extends  "../temp.html" %}
+{% load static %}
+
+
+{% block content %}
+<div id="login-form" class="container text-center" style="margin-top: 10%; margin-bottom: 15%;" >
+    <form method="POST" action="">
+        {% csrf_token %}
+        <div class="row">
+        <div class="col-xs-3 mx-auto">
+
+        <img src="{% static "images/logo.png" %}" alt="DermSite" width="150">
+        <h1>Zaloguj się</h1>  
+        
+        <div class="form-group">
+            <label for="input-login">Login</label>
+            <input type="text" class="form-control" id="input-login" name="input-login" placeholder="Podaj login">
+        </div>
+        <div class="form-group">
+            <label for="input-password">Hasło</label>
+            <input type="password" class="form-control" id="input-password" name="input-password" placeholder="Podaj hasło">
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Zaloguj</button>
+
+        {% for message in messages %}
+                <p id="messages">{{ message }}</p>
+        {% endfor %}
+        
+        </div>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}
