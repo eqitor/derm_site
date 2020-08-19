@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
+
+from .forms import CreateUserForm
 
 
 def login_page(request):
@@ -25,4 +28,21 @@ def login_page(request):
 def logout_user(request):
     logout(request)
     return redirect('base_app:mainpage')
+
+def register_page(request):
+
+    if request.user.is_authenticated:
+        return redirect('base_app:mainpage')
+    else:
+        form = CreateUserForm()
+        if request.method == 'POST':
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                form.save()
+                user = form.cleaned_data.get('username')
+                messages.success(request, 'Pomyślnie utworzono użytkownika {}. Teraz możesz się zalogować!'.format(user))
+                return redirect('account_management:login_page')
+
+        context = {'form':form}
+        return render(request, 'account_management/register_page.html', context)
 
