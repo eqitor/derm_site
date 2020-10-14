@@ -15,11 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf import settings
+from django.conf.urls.static import static
 from base_app import views
 from account_management import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('base_app.urls')),
     path('', include('account_management.urls')),
+    path('', include('classification_app.urls')),
 ]
+
+if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL,
+                              document_root=settings.MEDIA_ROOT)
