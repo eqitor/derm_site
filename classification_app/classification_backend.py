@@ -5,6 +5,7 @@ from sklearn.feature_selection import SelectKBest, chi2
 from sklearn.model_selection import train_test_split, RepeatedKFold
 from sklearn.svm import SVC
 from joblib import dump, load
+import image_processing as ip
 
 
 # Classification settings
@@ -20,10 +21,14 @@ def prepare_classifier():
     try:
         # Wczytywanie klasyfikatora
         svm = load('./static/svm.joblib')
+        svm_features = load('./static/svm_features.joblib')
+        stdsc = load('./static/stdsc.joblib')
     except FileNotFoundError as ex:
-        print(f"Cannot load classifier, creating new one...")
+        print(f"Cannot load classifier, features or scaler, creating new one...")
     else:
         print("SVM loaded successfully!")
+        print(f"SVM info: {svm.get_params()}")
+        print(f"Usef features: {svm_features}")
         ENABLE_CLASSIFICATION = True
         return
 
@@ -89,9 +94,6 @@ def prepare_classifier():
     for gamma in np.arange(66 - 5, 66 + 5, 1):
         for C in np.arange(6 - 5, 6 + 5, 1):
 
-            # inicjalizacja klasyfikatora k-NN
-            svm = SVC(kernel='rbf', random_state=0, gamma=gamma, C=C)
-
             # inicjalizacja obiektu do walidacji krzyżwej
             rkf = RepeatedKFold(n_splits=2, n_repeats=5)
 
@@ -102,7 +104,8 @@ def prepare_classifier():
                 iteration_score = 0
 
                 # standaryzacja wybranych cech
-                X_sorted_np_std = stdsc.fit_transform(X_sorted_np[:, :num_of_features])
+                stdsc.fit(X_sorted_np[:, :num_of_features])
+                X_sorted_np_std = stdsc.transform(X_sorted_np[:, :num_of_features])
 
                 # podział danych za pomocą 5 razy powtórzonej 2-krotnej walidacji krzyżowej
                 splitted_data = rkf.split(X_sorted_np_std)
@@ -113,6 +116,9 @@ def prepare_classifier():
                     X_train, X_test = X_sorted_np_std[train_index], X_sorted_np_std[test_index]
                     y_train, y_test = y[train_index], y[test_index]
 
+                    # inicjalizacja klasyfikatora
+                    svm = SVC(kernel='rbf', random_state=0, gamma=gamma, C=C)
+
                     # uczenie klasyfikatora za pomocą danych trenujących
                     svm.fit(X_train, y_train)
 
@@ -122,8 +128,36 @@ def prepare_classifier():
                 if svm.score(X_test, y_test) > best_score:
                     best_svm = svm
                     best_score = svm.score(X_test, y_test)
+                    best_features = zipped_list_columns[:num_of_features]
+
 
     ENABLE_CLASSIFICATION = True
-    print(f"Classificator created, score: {best_svm.score(X_test, y_test)}")
+    print(f"Classificator created, score: {best_score}")
+    print(f"Used features: {best_features}")
+
+    best_stdsc = StandardScaler()
+    best_stdsc.fit(X_sorted_np[:, :len(best_features)])
 
     dump(best_svm, r"./static/svm.joblib")
+    dump(best_features, r"./static/svm_features.joblib")
+    dump(best_stdsc, r"./static/stdsc.joblib")
+
+# TODO: Dekorator ktory bedzie blokowal
+def classify_image(img):
+
+    try:
+        svm_features = load('./static/svm_features.joblib')
+        svm = load('./static/svm.joblib')
+        stdsc = load('./static/stdsc.joblib')
+    except FileNotFoundError as ex:
+        print("something wrong")
+        return ex.args
+
+    quantification_results = ip.specified_quantification(img, svm_features)
+    quantification_results_std = stdsc.transform(np.array(quantification_results).reshape(1, -1))
+    classification_result = svm.predict(quantification_results_std)
+
+    return classification_result
+
+
+
