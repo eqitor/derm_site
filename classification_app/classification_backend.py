@@ -13,6 +13,9 @@ import image_processing as ip
 ENABLE_CLASSIFICATION = False
 
 
+
+
+
 def prepare_classifier():
 
     global ENABLE_CLASSIFICATION
