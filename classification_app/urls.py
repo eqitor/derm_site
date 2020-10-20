@@ -4,6 +4,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .views import *
 
+
+app_name = 'classification_app'
+
 urlpatterns = [
     path('image_upload', examination_image_view, name='image_upload'),
     path('success', success, name='success'),

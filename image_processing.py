@@ -736,8 +736,7 @@ def diff_struct_quantification(img):
 
 
 def specified_quantification(img, features_list):
-
-    results = []
+    results = features_list.copy()
 
     for a_feature in ['A_p', 'A_c', 'solidity', 'extent', 'equivalent diameter', 'circularity', 'p_p', 'b_p/a_p',
                       'b_b/a_b', 'entropy']:
@@ -748,7 +747,7 @@ def specified_quantification(img, features_list):
 
             for key, value in all_a_features.items():
                 if key in features_list:
-                    results.append(value)
+                    results[results.index(key)] = value
             break
 
     for b_feature in ['u', 'o2']:
@@ -758,7 +757,7 @@ def specified_quantification(img, features_list):
 
             for key, value in all_b_features.items():
                 if key in features_list:
-                    results.append(value)
+                    results[results.index(key)] = value
             break
 
     for c_feature in ['WHITE', 'RED', 'LIGHT_BROWN', 'DARK_BROWN', 'BLUE_GRAY', 'BLACK', 'B_mean', 'B_variance',
@@ -770,7 +769,7 @@ def specified_quantification(img, features_list):
 
             for key, value in all_c_features.items():
                 if key in features_list:
-                    results.append(value)
+                    results[results.index(key)] = value
             break
 
     for d_feature in ['E_LR', 'E_TB', 'E_TL_BR', 'E_TR_BL', 'H_LR', 'H_TB', 'H_TL_BR', 'H_TR_BL', 'Cor_LR', 'Cor_TB',
@@ -783,7 +782,7 @@ def specified_quantification(img, features_list):
 
             for key, value in all_d_features.items():
                 if key in features_list:
-                    results.append(value)
+                    results[results.index(key)] = value
 
             break
 

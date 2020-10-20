@@ -35,11 +35,20 @@ def examination_image_view(request):
             image_to_process = get_processing_image(request.FILES['image'].file)
 
             classification_result = classify_image(image_to_process)
-            print(str(classification_result[0]))
-            request.session['classification_result'] = str(classification_result[0])
-            # TODO: To niżej (save) tylko dla zalogowanych
-            #form.save()
-            return redirect('success')
+            print(classification_result)
+
+            if classification_result[0] == 1:
+                request.session['classification_result'] = 'malignant'
+            else:
+                request.session['classification_result'] = 'benign'
+
+            if request.user.is_authenticated:
+                post = form.save(commit=False)
+                post.user_field = request.user
+                post.diagnose = request.session['classification_result']
+                form.save()
+
+            return redirect('classification_app:success')
     else:
         form = ExaminationForm()
     return render(request, 'classification_app/examination_image_form.html', {'form': form})
@@ -47,4 +56,5 @@ def examination_image_view(request):
 
 @look_for_enable_classification
 def success(request):
-    return HttpResponse(f'Classification result = {request.session["classification_result"]}')
+    context = {'result': request.session["classification_result"]}
+    return render(request, 'classification_app/success.html', context)
