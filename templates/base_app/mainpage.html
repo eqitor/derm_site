@@ -117,7 +117,7 @@
                         <img src="{% static "images/card-1.jpg" %}" class="card-img-top" alt="...">
                         <div class="card-body">
                           <h5 class="card-title">Diagnozowanie czerniaka skóry</h5>
-                          <p class="card-text">Funkcja pozwala określić prawdopodobieństwo wystąpienia czerniaka na podstawie fotografi i krótkiego testu.</p>
+                          <p class="card-text">Funkcja pozwala określić prawdopodobieństwo wystąpienia czerniaka na podstawie fotografi.</p>
                           <a href="{% url 'classification_app:image_upload' %}" class="btn btn-primary">Wypróbuj</a>
                         </div>
                       </div>
@@ -128,7 +128,7 @@
                         <div class="card-body">
                           <h5 class="card-title">Wsparcie analizy obrazów</h5>
                           <p class="card-text">Prosta aplikacja ułatwiająca analizę obrazów dermatologicznych.</p>
-                          <a href="#" class="btn btn-primary">Wybróbuj</a>
+                          <a href="{% url 'processing_app:processing_image_upload' %}" class="btn btn-primary">Wybróbuj</a>
                         </div>
                       </div>
                 </div>

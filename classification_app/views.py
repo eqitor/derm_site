@@ -6,11 +6,8 @@ from .forms import *
 from PIL import Image
 import numpy as np
 from .classification_backend import classify_image, ENABLE_CLASSIFICATION
+from image_processing import get_processing_image
 
-def get_processing_image(uploaded_image):
-    pil_img = Image.open(uploaded_image)
-    cv_img = np.array(pil_img)
-    return cv_img
 
 def look_for_enable_classification(fun):
     def wrapper(*args, **kwargs):
@@ -31,7 +28,6 @@ def examination_image_view(request):
         form = ExaminationForm(request.POST, request.FILES)
 
         if form.is_valid():
-
             image_to_process = get_processing_image(request.FILES['image'].file)
 
             classification_result = classify_image(image_to_process)

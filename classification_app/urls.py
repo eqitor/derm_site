@@ -10,6 +10,7 @@ app_name = 'classification_app'
 urlpatterns = [
     path('image_upload', examination_image_view, name='image_upload'),
     path('success', success, name='success'),
+
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,20 @@
+{% extends  "../temp.html" %}
+{% load static %}
+
+
+{% block content %}
+<div id="login-form" class="container text-center" style="margin-top: 10%; margin-bottom: 15%;" >
+
+    <img src="{% static "images/logo.png" %}" alt="DermSite" width="150">
+    <h1>Prześlij zdjęcie do przetwarzania</h1>
+
+    <form method = "post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+
+</div>
+
+
+{% endblock %}

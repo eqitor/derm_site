@@ -2,7 +2,8 @@ import cv2
 import numpy as np
 from skimage.draw import line as skimage_line
 import math
-
+from PIL import Image
+from io import BytesIO
 
 def remove_uneven_illumination(img, blur_iterations=1, kernel_size=121, sigma=100, img_weight=0.5, blur_weight=0.5):
     """Removes uneven illumination of image
@@ -789,5 +790,16 @@ def specified_quantification(img, features_list):
     return results
 
 
+def get_processing_image(uploaded_image):
+    pil_img = Image.open(uploaded_image)
+    cv_img = np.array(pil_img)
+    return cv_img
 
+
+def get_pil_image(processed_image):
+    pil_img = Image.fromarray(processed_image)
+    buffer = BytesIO()
+    pil_img.save(buffer, format='png')
+    image_png = buffer.getvalue()
+    return image_png
 
