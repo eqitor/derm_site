@@ -9,7 +9,8 @@ from django.core.files.base import ContentFile
 
 from PIL import Image
 import numpy as np
-from image_processing import get_processing_image, get_pil_image, remove_uneven_illumination
+from image_processing import get_processing_image, get_pil_image, remove_uneven_illumination,\
+    create_contours_image
 
 
 def processing_image_upload_view(request):
@@ -54,5 +55,19 @@ def remove_illumination(request):
     removed_illumination_pil_temp.save()
 
     request.session['image'] = removed_illumination_pil_temp.image.url
+
+    return redirect('processing_app:processing')
+
+
+def contour_image(request):
+    image = get_processing_image(str(settings.BASE_DIR) + request.session['image'])
+    image_name = str(request.session['image']).split('/')[-1]
+    image_contours = create_contours_image(image)
+    image_contours_pil = get_pil_image(image_contours)
+    image_contours_pil_temp = TempImage()
+    image_contours_pil_temp.image.save('contours ' + image_name, ContentFile(image_contours_pil), save=False)
+    image_contours_pil_temp.save()
+
+    request.session['image'] = image_contours_pil_temp.image.url
 
     return redirect('processing_app:processing')

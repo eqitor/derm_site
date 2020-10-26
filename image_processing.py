@@ -803,3 +803,18 @@ def get_pil_image(processed_image):
     image_png = buffer.getvalue()
     return image_png
 
+
+def create_contours_image(image):
+    img = prepare_image_peak_slicing(image, median_filter=True)
+    img_contour = find_pigmented_contour(img)
+    img_contour = repair_contour(img_contour)
+    x, y, w, h = find_bounding_box(img_contour)
+    img_convex_hull = find_convex_hull(img_contour)
+
+    connect_points(image, img_contour, (255, 0, 0), 2)
+    cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    connect_points(image, img_convex_hull, (255, 255, 0), 2)
+
+    return image
+
+
