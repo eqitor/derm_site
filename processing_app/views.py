@@ -10,7 +10,7 @@ from django.core.files.base import ContentFile
 from PIL import Image
 import numpy as np
 from image_processing import get_processing_image, get_pil_image, remove_uneven_illumination,\
-    create_contours_image
+    create_contours_image, colour_quantification, create_axes_image
 
 
 def processing_image_upload_view(request):
@@ -69,5 +69,28 @@ def contour_image(request):
     image_contours_pil_temp.save()
 
     request.session['image'] = image_contours_pil_temp.image.url
+
+    return redirect('processing_app:processing')
+
+
+def colour_params(request):
+    image = get_processing_image(str(settings.BASE_DIR) + request.session['image'])
+    image_name = str(request.session['image']).split('/')[-1]
+
+    colors_info = colour_quantification(image)
+    # TODO: Przesłać to na inną stronę i zrobić front
+    return HttpResponse(str(colors_info))
+
+
+def axes_image(request):
+    image = get_processing_image(str(settings.BASE_DIR) + request.session['image'])
+    image_name = str(request.session['image']).split('/')[-1]
+    image_axes = create_axes_image(image)
+    image_axes_pil = get_pil_image(image_axes)
+    image_axes_pil_temp = TempImage()
+    image_axes_pil_temp.image.save('axes ' + image_name, ContentFile(image_axes_pil), save=False)
+    image_axes_pil_temp.save()
+
+    request.session['image'] = image_axes_pil_temp.image.url
 
     return redirect('processing_app:processing')

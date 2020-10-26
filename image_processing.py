@@ -818,3 +818,17 @@ def create_contours_image(image):
     return image
 
 
+def create_axes_image(image):
+    img = prepare_image_peak_slicing(image, median_filter=True)
+
+    img_contour = find_pigmented_contour(img)
+    img_contour = repair_contour(img_contour)
+
+    img_axes = find_axes(img_contour)
+
+    cv2.line(image, img_axes[0], img_axes[1], (123, 211, 121), 2)
+    cv2.line(image, img_axes[2], img_axes[3], (123, 211, 121), 2)
+
+    return image
+
+

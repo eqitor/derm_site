@@ -13,7 +13,9 @@ urlpatterns = [
     path('image_processing', processing, name='processing'),
     path('save', save, name='save'),
     path('remove_illumination', remove_illumination, name='remove_illumination'),
-    path('contour_image', contour_image, name='contour_image')
+    path('contour_image', contour_image, name='contour_image'),
+    path('colour_params', colour_params, name='colour_params'),
+    path('axes_image', axes_image, name='axes_image'),
 ]
 
 if settings.DEBUG:
