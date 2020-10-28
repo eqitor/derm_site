@@ -832,3 +832,18 @@ def create_axes_image(image):
     return image
 
 
+def clahe_image(image):
+    img_pre_clahe_lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
+
+    l, a, b = cv2.split(img_pre_clahe_lab)
+
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+
+    l_clahe = clahe.apply(l)
+
+    img_l = cv2.merge((l_clahe, a, b))
+
+    img_clahe_final = cv2.cvtColor(img_l, cv2.COLOR_LAB2BGR)
+
+    return img_clahe_final
+

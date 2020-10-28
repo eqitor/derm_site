@@ -1,0 +1,31 @@
+{% extends  "../temp.html" %}
+{% load static %}
+
+
+{% block content %}
+<div id="login-form" class="container text-center" style="margin-top: 10%; margin-bottom: 15%;" >
+    <h2>Original image</h2>
+    <img src="{{image}}" alt="original" width="150">
+
+
+    <h2>CLAHE</h2>
+    <img src="{{image_clahe}}" alt="clahe" width="150">
+
+
+    <h2>Axes</h2>
+    <img src="{{image_axes}}" alt="axes" width="150">
+
+
+    <h2>Contours</h2>
+    <img src="{{image_contours}}" alt="contours" width="150">
+
+
+    <h2>Removed illumination</h2>
+    <img src="{{image_illumination_removed}}" alt="rem illumination" width="150">
+
+</div>
+
+
+
+
+{% endblock %}

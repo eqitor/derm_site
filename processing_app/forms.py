@@ -1,8 +1,9 @@
 from django import forms
 from .models import *
 
-class TempImageForm(forms.ModelForm):
+
+class ImageProcForm(forms.ModelForm):
 
     class Meta:
-        model = TempImage
+        model = ImageProc
         fields = ['image']
