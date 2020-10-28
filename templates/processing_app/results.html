@@ -3,29 +3,61 @@
 
 
 {% block content %}
-<div id="login-form" class="container text-center" style="margin-top: 10%; margin-bottom: 15%;" >
-    <h2>Original image</h2>
-    <img src="{{image}}" alt="original" width="150">
 
 
-    <h2>CLAHE</h2>
-    <img src="{{image_clahe}}" alt="clahe" width="150">
 
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3 col-sm-12">
+            <figure>
+                <img src="{{image}}" class="img-fluid" alt="Oryginał">
+                <figcaption>Oryginał</figcaption>
+            </figure>
 
-    <h2>Axes</h2>
-    <img src="{{image_axes}}" alt="axes" width="150">
+            <figure>
+                <img src="{{image_clahe}}" class="img-fluid" alt="Filtr CLAHE">
+                <figcaption>Filtr CLAHE</figcaption>
+            </figure>
 
+            <figure>
+                <img src="{{image_axes}}" class="img-fluid" alt="Osie">
+                <figcaption>Osie</figcaption>
+            </figure>
+        </div>
 
-    <h2>Contours</h2>
-    <img src="{{image_contours}}" alt="contours" width="150">
+        <div class="col-md-3 col-sm-12">
+            <figure>
+                <img src="{{image_contours}}" class="img-fluid" alt="Kontury">
+                <figcaption>Kontury</figcaption>
+            </figure>
 
+            <figure>
+                <img src="{{image_illumination_removed}}" class="img-fluid" alt="Brak iluminacji">
+                <figcaption>Brak iluminacji</figcaption>
+            </figure>
 
-    <h2>Removed illumination</h2>
-    <img src="{{image_illumination_removed}}" alt="rem illumination" width="150">
+        </div>
 
+        <div class="col-md-6 col-sm-12">
+            <h1>Badanie nr. {{id}}</h1>
+            <ul>
+                <li>Pacjent:  {{patient_name}}</li>
+                <li>Data: {{date}}</li>
+                <li>Opis: {{description}}</li>
+            </ul>
+            <h2>Parametry obrazu</h2>
+            <h3>Zawartość kolorów</h3>
+            <ul>
+                <li>Biały: {{white}}%</li>
+                <li>Red: {{red}}%</li>
+                <li>Light Brown: {{light_brown}}%</li>
+                <li>Dark Brown: {{dark_brown}}%</li>
+                <li>Blue Gray: {{blue_gray}}%</li>
+                <li>Black: {{black}}%</li>
+            </ul>
+        </div>
+    </div>
 </div>
-
-
 
 
 {% endblock %}

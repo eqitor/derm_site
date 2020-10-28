@@ -35,7 +35,7 @@ def processing(request):
     image = get_processing_image(str(settings.BASE_DIR) + request.session['image'])
     image_name = str(request.session['image']).split('/')[-1]
     db_object = ImageProc.objects.get(id=request.session['id'])
-    # copy_of_img = image.copy()
+
     # create no illumination image
     removed_illumination = remove_uneven_illumination(image)
     removed_illumination_pil = get_pil_image(removed_illumination)
@@ -57,6 +57,14 @@ def processing(request):
     image_clahe_pil = get_pil_image(image_clahe)
     db_object.image_clahe.save('clahe ' + image_name, ContentFile(image_clahe_pil), save=False)
 
+    colour_features = colour_quantification(image)
+
+    db_object.white_color = colour_features['WHITE']
+    db_object.red_color = colour_features['RED']
+    db_object.light_brown_color = colour_features['LIGHT_BROWN']
+    db_object.dark_brown_color = colour_features['DARK_BROWN']
+    db_object.blue_gray_color = colour_features['BLUE_GRAY']
+    db_object.black_color = colour_features['BLACK']
 
     db_object.save()
 
@@ -71,52 +79,22 @@ def results(request):
     db_object = ImageProc.objects.get(id=request.session['id'])
 
     context = {
+        'id': db_object.id,
+        'date': str(db_object.created),
         'image': db_object.image.url,
         'image_clahe': db_object.image_clahe.url,
         'image_axes': db_object.image_axes.url,
         'image_contours': db_object.image_contours.url,
         'image_illumination_removed': db_object.image_illumination_removed.url,
+        'white': format(db_object.white_color * 100, '.2f'),
+        'red': format(db_object.red_color * 100, '.2f'),
+        'light_brown': format(db_object.light_brown_color * 100, '.2f'),
+        'dark_brown': format(db_object.dark_brown_color * 100, '.2f'),
+        'blue_gray': format(db_object.blue_gray_color * 100, '.2f'),
+        'black': format(db_object.black_color * 100, '.2f'),
     }
 
     return render(request, 'processing_app/results.html', context)
-
-
-# @login_required
-# def save(request):
-#     processed_image = ProcessedImage(user_field=request.user, image=request.session['image'])
-#     processed_image.save()
-#     return redirect('processing_app:processing')
-
-
-def remove_illumination(request):
-    image = get_processing_image(str(settings.BASE_DIR) + request.session['image'])
-    image_name = str(request.session['image']).split('/')[-1]
-    removed_illumination = remove_uneven_illumination(image)
-    removed_illumination_pil = get_pil_image(removed_illumination)
-
-    removed_illumination_pil_temp = TempImage()
-    removed_illumination_pil_temp.image.save('noilumination ' + image_name,
-                                             ContentFile(removed_illumination_pil), save=False)
-    removed_illumination_pil_temp.save()
-
-    request.session['image'] = removed_illumination_pil_temp.image.url
-
-    return redirect('processing_app:processing')
-
-
-def contour_image(request):
-    image = get_processing_image(str(settings.BASE_DIR) + request.session['image'])
-    image_name = str(request.session['image']).split('/')[-1]
-    image_contours = create_contours_image(image)
-    image_contours_pil = get_pil_image(image_contours)
-    image_contours_pil_temp = TempImage()
-    image_contours_pil_temp.image.save('contours ' + image_name, ContentFile(image_contours_pil), save=False)
-    image_contours_pil_temp.save()
-
-    request.session['image'] = image_contours_pil_temp.image.url
-
-    return redirect('processing_app:processing')
-
 
 def colour_params(request):
     image = get_processing_image(str(settings.BASE_DIR) + request.session['image'])
@@ -126,16 +104,3 @@ def colour_params(request):
     # TODO: Przesłać to na inną stronę i zrobić front
     return HttpResponse(str(colors_info))
 
-
-def axes_image(request):
-    image = get_processing_image(str(settings.BASE_DIR) + request.session['image'])
-    image_name = str(request.session['image']).split('/')[-1]
-    image_axes = create_axes_image(image)
-    image_axes_pil = get_pil_image(image_axes)
-    image_axes_pil_temp = TempImage()
-    image_axes_pil_temp.image.save('axes ' + image_name, ContentFile(image_axes_pil), save=False)
-    image_axes_pil_temp.save()
-
-    request.session['image'] = image_axes_pil_temp.image.url
-
-    return redirect('processing_app:processing')
