@@ -45,15 +45,18 @@
                 <li>Data: {{date}}</li>
                 <li>Opis: {{description}}</li>
             </ul>
+
+            <a href="{% url 'processing_app:edit_data' %}"><button type="button" class="btn btn-dark"> Edytuj dane</button></a>
+
             <h2>Parametry obrazu</h2>
             <h3>Zawartość kolorów</h3>
             <ul>
                 <li>Biały: {{white}}%</li>
-                <li>Red: {{red}}%</li>
-                <li>Light Brown: {{light_brown}}%</li>
-                <li>Dark Brown: {{dark_brown}}%</li>
-                <li>Blue Gray: {{blue_gray}}%</li>
-                <li>Black: {{black}}%</li>
+                <li>Czerwony: {{red}}%</li>
+                <li>Jasny brąz: {{light_brown}}%</li>
+                <li>Ciemny brąz: {{dark_brown}}%</li>
+                <li>Niebiesko szary: {{blue_gray}}%</li>
+                <li>Czarny: {{black}}%</li>
             </ul>
         </div>
     </div>

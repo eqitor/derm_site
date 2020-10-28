@@ -81,6 +81,8 @@ def results(request):
     context = {
         'id': db_object.id,
         'date': str(db_object.created),
+        'patient_name': db_object.patient_name,
+        'description': db_object.description,
         'image': db_object.image.url,
         'image_clahe': db_object.image_clahe.url,
         'image_axes': db_object.image_axes.url,
@@ -96,11 +98,19 @@ def results(request):
 
     return render(request, 'processing_app/results.html', context)
 
-def colour_params(request):
-    image = get_processing_image(str(settings.BASE_DIR) + request.session['image'])
-    image_name = str(request.session['image']).split('/')[-1]
 
-    colors_info = colour_quantification(image)
-    # TODO: Przesłać to na inną stronę i zrobić front
-    return HttpResponse(str(colors_info))
+def edit_data(request):
+    if request.method == 'POST':
+        form = EditDataForm(request.POST)
+        if form.is_valid():
+            db_object = ImageProc.objects.get(id=request.session['id'])
+            db_object.description = form.cleaned_data['description']
+            db_object.patient_name = form.cleaned_data['patient_name']
+            db_object.save()
+
+            return redirect('processing_app:results')
+    else:
+        form = EditDataForm()
+
+    return render(request, 'processing_app/edit_data.html', {'form': form})
 

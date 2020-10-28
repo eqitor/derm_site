@@ -1,0 +1,24 @@
+{% extends  "../temp.html" %}
+{% load static %}
+
+
+{% block content %}
+<div id="login-form" class="container text-center" style="margin-top: 10%; margin-bottom: 15%;" >
+
+    <img src="{% static "images/logo.png" %}" alt="DermSite" width="150">
+    <h1>Edytuj dane</h1>
+
+    <form method = "post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit" class="btn btn-primary">Zapisz</button>
+    </form>
+
+    {% for message in messages %}
+                <p id="messages">{{ message }}</p>
+    {% endfor %}
+
+</div>
+
+
+{% endblock %}

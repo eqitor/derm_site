@@ -13,6 +13,8 @@ class ImageProc(models.Model):
     id = models.AutoField(primary_key=True)
     user_field = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     created = models.DateTimeField(blank=True, default=datetime.now)
+    description = models.TextField(blank=True, default='brak opisu', max_length=300)
+    patient_name = models.CharField(blank=True, default='brak', max_length=30)
 
     image = models.ImageField(upload_to=update_filename)
     image_clahe = models.ImageField(upload_to=update_filename)
