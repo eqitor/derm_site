@@ -10,7 +10,7 @@ from django.core.files.base import ContentFile
 from PIL import Image
 import numpy as np
 from image_processing import get_processing_image, get_pil_image, remove_uneven_illumination,\
-    create_contours_image, colour_quantification, create_axes_image, clahe_image
+    create_contours_image, colour_quantification, create_axes_image, clahe_image, asymmetry_quantification
 
 @login_required
 def processing_image_upload_view(request):
@@ -66,6 +66,24 @@ def processing(request):
     db_object.blue_gray_color = colour_features['BLUE_GRAY']
     db_object.black_color = colour_features['BLACK']
 
+    asymmetry_features = asymmetry_quantification(image, enable_processing_features=True)
+
+    db_object.a_p_feature = asymmetry_features['a_p']
+    db_object.b_p_feature = asymmetry_features['b_p']
+    db_object.a_b_feature = asymmetry_features['a_b']
+    db_object.b_b_feature = asymmetry_features['b_b']
+    db_object.area_p_feature = asymmetry_features['A_p']
+    db_object.area_c_feature = asymmetry_features['A_c']
+    db_object.solidity_feature = asymmetry_features['solidity']
+    db_object.extent_feature = asymmetry_features['extent']
+    db_object.equivalent_diameter_feature = asymmetry_features['equivalent diameter']
+    db_object.circularity_feature = asymmetry_features['circularity']
+    db_object.p_p_feature = asymmetry_features['p_p']
+    db_object.b_p_a_p_feature = asymmetry_features['b_p/a_p']
+    db_object.b_b_a_b_feature = asymmetry_features['b_b/a_b']
+    db_object.entropy_feature = asymmetry_features['entropy']
+
+
     db_object.save()
 
 
@@ -94,6 +112,20 @@ def results(request):
         'dark_brown': format(db_object.dark_brown_color * 100, '.2f'),
         'blue_gray': format(db_object.blue_gray_color * 100, '.2f'),
         'black': format(db_object.black_color * 100, '.2f'),
+        'a_p': format(db_object.a_p_feature, '.2f'),
+        'b_p': format(db_object.b_p_feature, '.2f'),
+        'a_b': format(db_object.a_b_feature, '.2f'),
+        'b_b': format(db_object.b_b_feature, '.2f'),
+        'area_p': format(db_object.area_p_feature, '.2f'),
+        'area_c': format(db_object.area_c_feature, '.2f'),
+        'solidity': format(db_object.solidity_feature, '.2f'),
+        'extent': format(db_object.extent_feature, '.2f'),
+        'equivalent_diameter': format(db_object.equivalent_diameter_feature, '.2f'),
+        'circularity': format(db_object.circularity_feature, '.2f'),
+        'p_p': format(db_object.p_p_feature, '.2f'),
+        'b_p/a_p': format(db_object.b_p_a_p_feature, '.2f'),
+        'b_b/a_b': format(db_object.b_b_a_b_feature, '.2f'),
+        'entropy': format(db_object.entropy_feature, '.2f'),
     }
 
     return render(request, 'processing_app/results.html', context)

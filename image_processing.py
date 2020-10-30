@@ -490,9 +490,10 @@ def calc_Con(glcm):
     return Con_sum
 
 
-def asymmetry_quantification(img):
+def asymmetry_quantification(img, enable_processing_features=False):
     """Computes asymmetry parameters of image
     @img - source image
+    @enable_processing_features - used with processing_app to return additional data if it's true
 
     @return ... - computed parameters"""
 
@@ -540,6 +541,12 @@ def asymmetry_quantification(img):
         'entropy': entr,
 
     }
+
+    if enable_processing_features:
+        features['a_p'] = a_p
+        features['b_p'] = b_p
+        features['a_b'] = a_b
+        features['b_b'] = b_b
 
     return features
 
