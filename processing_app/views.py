@@ -101,6 +101,7 @@ def results(request):
         'date': str(db_object.created),
         'patient_name': db_object.patient_name,
         'description': db_object.description,
+        'classification_result': db_object.classification_result,
         'image': db_object.image.url,
         'image_clahe': db_object.image_clahe.url,
         'image_axes': db_object.image_axes.url,

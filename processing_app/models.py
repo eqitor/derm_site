@@ -16,6 +16,7 @@ class ImageProc(models.Model):
     created = models.DateTimeField(blank=True, default=datetime.now)
     description = models.TextField(blank=True, default='brak opisu', max_length=300)
     patient_name = models.CharField(blank=True, default='brak', max_length=30)
+    classification_result = models.CharField(blank=True, default='brak', max_length=30)
 
     # saved images
     image = models.ImageField(upload_to=update_filename)

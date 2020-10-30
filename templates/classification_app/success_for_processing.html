@@ -1,0 +1,19 @@
+{% extends  "../temp.html" %}
+{% load static %}
+
+
+{% block content %}
+<div id="login-form" class="container text-center" style="margin-top: 10%; margin-bottom: 15%;" >
+
+    <img src="{% static "images/logo.png" %}" alt="DermSite" width="150">
+    <h1>Wynik klasyfikacji</h1>
+
+    <h2>Klasyfikator wskazał, że zniekształcenie zalicza sie do klasy:</h2>
+    <h2>{{ result }}</h2>
+    <a class="btn btn-primary" href="{% url 'processing_app:results' %}">Powrót</a>
+
+
+</div>
+
+
+{% endblock %}

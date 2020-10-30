@@ -44,9 +44,11 @@
                 <li>Pacjent:  {{patient_name}}</li>
                 <li>Data: {{date}}</li>
                 <li>Opis: {{description}}</li>
+                <li>Wynik klasyfikacji: {{classification_result}}</li>
             </ul>
 
             <a href="{% url 'processing_app:edit_data' %}"><button type="button" class="btn btn-dark"> Edytuj dane</button></a>
+            <a href="{% url 'classification_app:examination_image_for_processing' %}"><button type="button" class="btn btn-dark"> Poddaj klasyfikacji</button></a>
 
             <h2>Parametry obrazu</h2>
             <h3>Zawartość kolorów</h3>

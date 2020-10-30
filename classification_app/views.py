@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .forms import *
+from processing_app.models import ImageProc
 
 from PIL import Image
 import numpy as np
@@ -31,7 +32,6 @@ def examination_image_view(request):
             image_to_process = get_processing_image(request.FILES['image'].file)
 
             classification_result = classify_image(image_to_process)
-            print(classification_result)
 
             if classification_result[0] == 1:
                 request.session['classification_result'] = 'malignant'
@@ -51,6 +51,29 @@ def examination_image_view(request):
 
 
 @look_for_enable_classification
+def examination_image_for_processing(request):
+    db_object = ImageProc.objects.get(id=request.session['id'])
+    image_to_process = get_processing_image(db_object.image)
+
+    classification_result = classify_image(image_to_process)
+
+    if classification_result[0] == 1:
+        request.session['classification_result'] = 'malignant'
+    else:
+        request.session['classification_result'] = 'benign'
+
+    db_object.classification_result = request.session['classification_result']
+    db_object.save()
+
+    return redirect('classification_app:success_for_processing')
+
+
+@look_for_enable_classification
 def success(request):
     context = {'result': request.session["classification_result"]}
     return render(request, 'classification_app/success.html', context)
+
+
+def success_for_processing(request):
+    context = {'result': request.session["classification_result"]}
+    return render(request, 'classification_app/success_for_processing.html', context)
