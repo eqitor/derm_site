@@ -47,8 +47,17 @@
                 <li>Wynik klasyfikacji: {{classification_result}}</li>
             </ul>
 
-            <a href="{% url 'processing_app:edit_data' %}"><button type="button" class="btn btn-dark"> Edytuj dane</button></a>
-            <a href="{% url 'classification_app:examination_image_for_processing' %}"><button type="button" class="btn btn-dark"> Poddaj klasyfikacji</button></a>
+            <a href="{% url 'processing_app:edit_data' %}">
+                <button class="button">
+                  <span class="btn-txt">Edytuj dane</span>
+                </button>
+            </a>
+            <a href="{% url 'classification_app:examination_image_for_processing' %}">
+                <button class="button">
+                  <i class="loading-icon fa fa-spinner fa-spin hide"></i>
+                  <span class="btn-txt">Poddaj klasyfikacji</span>
+                </button>
+            </a>
 
             <h2>Parametry obrazu</h2>
             <h3>Zawartość kolorów</h3>
@@ -76,6 +85,23 @@
         </div>
     </div>
 </div>
+
+<script>
+      $(document).ready(function() {
+        $(".button").on("click", function() {
+          $(".result").text("");
+          $(".loading-icon").removeClass("hide");
+          $(".button").attr("disabled", true);
+
+          $.get("https://jsonplaceholder.typicode.com/posts", function(data) {
+            $(".result").html(JSON.stringify(data));
+            $(".loading-icon").addClass("hide");
+            $(".button").attr("disabled", false);
+
+          });
+        });
+      });
+    </script>
 
 
 {% endblock %}

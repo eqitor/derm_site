@@ -70,10 +70,18 @@ def examination_image_for_processing(request):
 
 @look_for_enable_classification
 def success(request):
-    context = {'result': request.session["classification_result"]}
+    if request.session["classification_result"] == 'benign':
+        result = 'łagodny'
+    elif request.session["classification_result"] == 'malignant':
+        result = 'złośliwy'
+    context = {'result': result}
     return render(request, 'classification_app/success.html', context)
 
 
 def success_for_processing(request):
-    context = {'result': request.session["classification_result"]}
+    if request.session["classification_result"] == 'benign':
+        result = 'łagodny'
+    elif request.session["classification_result"] == 'malignant':
+        result = 'złośliwy'
+    context = {'result': result}
     return render(request, 'classification_app/success_for_processing.html', context)

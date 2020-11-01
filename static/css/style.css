@@ -115,3 +115,30 @@
   border-top-style: solid;
   border-top-width: 2px;
 }
+
+/* SPINNER CLASSES */
+
+.button {
+    background-color: #008cba;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+.button:disabled {
+    opacity: 0.5;
+}
+
+.hide {
+    display: none !important;
+}
+
+.block-margins {
+    margin-top: 10%;
+    margin-bottom: 15%;
+}

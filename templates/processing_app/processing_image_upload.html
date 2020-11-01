@@ -11,10 +11,30 @@
     <form method = "post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Upload</button>
+        <button class="button">
+          <i class="loading-icon fa fa-spinner fa-spin hide"></i>
+          <span class="btn-txt">Wyślij</span>
+        </button>
     </form>
 
 </div>
 
+
+<script>
+      $(document).ready(function() {
+        $(".button").on("click", function() {
+          $(".result").text("");
+          $(".loading-icon").removeClass("hide");
+          $(".button").attr("disabled", true);
+
+          $.get("https://jsonplaceholder.typicode.com/posts", function(data) {
+            $(".result").html(JSON.stringify(data));
+            $(".loading-icon").addClass("hide");
+            $(".button").attr("disabled", false);
+
+          });
+        });
+      });
+    </script>
 
 {% endblock %}
