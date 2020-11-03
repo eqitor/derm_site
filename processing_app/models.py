@@ -5,11 +5,14 @@ from datetime import timedelta, datetime
 from PIL import Image
 import numpy as np
 
+
 def update_filename(instance, filename):
+    """Function specifies method of saving uploaded image to file and database"""
     return f'images/{instance.id}/{filename}'
 
 
 class ImageProc(models.Model):
+    """Model of processed image. Contains examination information, images and computed parameters."""
     # description data
     id = models.AutoField(primary_key=True)
     user_field = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
@@ -49,10 +52,5 @@ class ImageProc(models.Model):
     b_b_a_b_feature = models.FloatField(null=True, default=-1)
     entropy_feature = models.FloatField(null=True, default=-1)
 
-
     def __str__(self):
         return str(self.id)
-
-
-
-

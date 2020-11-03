@@ -2,26 +2,32 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .forms import *
-from .models import ImageProc
 from django.conf import settings
 from django.core.files.base import ContentFile
 
-from PIL import Image
-import numpy as np
+from .forms import *
+from .models import ImageProc
 from image_processing import get_processing_image, get_pil_image, remove_uneven_illumination,\
     create_contours_image, colour_quantification, create_axes_image, clahe_image, asymmetry_quantification
 
+
 @login_required
 def processing_image_upload_view(request):
+    """View used in processing_app to upload image.."""
     if request.method == 'POST':
         form = ImageProcForm(request.POST, request.FILES)
 
         if form.is_valid():
+            # create and separated db object to provide ID before image saving
             db_object = ImageProc.objects.create()
             db_object.save()
+
+            # saving image to new created db object
             db_object.image = request.FILES['image']
+            db_object.user_field = request.user
             db_object.save()
+
+            # saving image data in session
             request.session['image'] = db_object.image.url
             request.session['id'] = db_object.id
 
@@ -32,6 +38,7 @@ def processing_image_upload_view(request):
 
 
 def processing(request):
+    """View computes image parameters and additional images."""
     image = get_processing_image(str(settings.BASE_DIR) + request.session['image'])
     image_name = str(request.session['image']).split('/')[-1]
     db_object = ImageProc.objects.get(id=request.session['id'])
@@ -83,17 +90,13 @@ def processing(request):
     db_object.b_b_a_b_feature = asymmetry_features['b_b/a_b']
     db_object.entropy_feature = asymmetry_features['entropy']
 
-
     db_object.save()
-
-
-    #TODO: tu mozna zrobic ekran z ikonka wczytywania tj czekanie na przetworzenie
-
 
     return redirect('processing_app:results')
 
 
 def results(request):
+    """View shows results of processing."""
     db_object = ImageProc.objects.get(id=request.session['id'])
 
     context = {
@@ -133,6 +136,7 @@ def results(request):
 
 
 def edit_data(request):
+    """View shows form to edit processed image data."""
     if request.method == 'POST':
         form = EditDataForm(request.POST)
         if form.is_valid():
@@ -146,4 +150,3 @@ def edit_data(request):
         form = EditDataForm()
 
     return render(request, 'processing_app/edit_data.html', {'form': form})
-

@@ -15,6 +15,7 @@ urlpatterns = [
     path('edit_data', edit_data, name='edit_data'),
 ]
 
+# adds media folder for debug mode
 if settings.DEBUG:
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += static(settings.MEDIA_URL,

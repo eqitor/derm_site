@@ -10,33 +10,21 @@
 
     <img src="{% static "images/logo.png" %}" alt="DermSite" width="150">
     <h1>Prześlij zdjęcie</h1>
+    <h2>Po przeslaniu zdjęcia zaznacz interesujący Cię kontur.</h2>
 
-    <form method = "post" enctype="multipart/form-data">
+
+    <div id="alert-box"></div>
+    <div id="image-box" class="mb-3"></div>
+    <form action="" id="image-form">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button class="button">
-          <i class="loading-icon fa fa-spinner fa-spin hide"></i>
-          <span class="btn-txt">Wyślij</span>
-        </button>
+        {{form.as_p}}
     </form>
+    <button class="btn btn-primary mt-3 not-visible" id="confirm-btn">Potwierdź zaznaczenie</button>
+
+    <a id="next-ref" class="not-visible" href="{% url 'classification_app:run_processing' %}">
+        <button class="btn btn-primary mt-3">Poddaj klasyfikacji</button>
+    </a>
 
 </div>
-
-<script>
-      $(document).ready(function() {
-        $(".button").on("click", function() {
-          $(".result").text("");
-          $(".loading-icon").removeClass("hide");
-          $(".button").attr("disabled", true);
-
-          $.get("https://jsonplaceholder.typicode.com/posts", function(data) {
-            $(".result").html(JSON.stringify(data));
-            $(".loading-icon").addClass("hide");
-            $(".button").attr("disabled", false);
-
-          });
-        });
-      });
-    </script>
 
 {% endblock %}

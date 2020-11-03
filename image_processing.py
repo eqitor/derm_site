@@ -5,6 +5,7 @@ import math
 from PIL import Image
 from io import BytesIO
 
+
 def remove_uneven_illumination(img, blur_iterations=1, kernel_size=121, sigma=100, img_weight=0.5, blur_weight=0.5):
     """Removes uneven illumination of image
     @img - source image
@@ -562,10 +563,8 @@ def border_quantification(img):
 
     img = remove_uneven_illumination(img)
 
-    img_gray_sobel_edges_x = cv2.Sobel(img, -1, dx=1, dy=0, scale=1, delta=0,
-                                      borderType=cv2.BORDER_DEFAULT)
-    img_gray_sobel_edges_y = cv2.Sobel(img, -1, dx=0, dy=1, scale=1, delta=0,
-                                      borderType=cv2.BORDER_DEFAULT)
+    img_gray_sobel_edges_x = cv2.Sobel(img, -1, dx=1, dy=0, scale=1, delta=0, borderType=cv2.BORDER_DEFAULT)
+    img_gray_sobel_edges_y = cv2.Sobel(img, -1, dx=0, dy=1, scale=1, delta=0, borderType=cv2.BORDER_DEFAULT)
     img_gray_sobel_edges = img_gray_sobel_edges_x + img_gray_sobel_edges_y
 
     img_thres = prepare_image_peak_slicing(img, median_filter=True)
@@ -744,6 +743,11 @@ def diff_struct_quantification(img):
 
 
 def specified_quantification(img, features_list):
+    """Computes parameters of image specified by features_list. Function runs ABCD quantification functions.
+    @img - source image
+    @features_list - list of selected features
+
+    @return results - calculated parameters"""
     results = features_list.copy()
 
     for a_feature in ['A_p', 'A_c', 'solidity', 'extent', 'equivalent diameter', 'circularity', 'p_p', 'b_p/a_p',
@@ -798,12 +802,18 @@ def specified_quantification(img, features_list):
 
 
 def get_processing_image(uploaded_image):
+    """Create image adapted to process by processing_app algorithms.
+    @uploaded_image - source image
+    @return cv_image - image adapted to process"""
     pil_img = Image.open(uploaded_image)
     cv_img = np.array(pil_img)
     return cv_img
 
 
 def get_pil_image(processed_image):
+    """Create image to save as file
+    @processed_image - source image as numpy array
+    @return image_png - image enabled to save as file"""
     pil_img = Image.fromarray(processed_image)
     buffer = BytesIO()
     pil_img.save(buffer, format='png')
@@ -812,6 +822,9 @@ def get_pil_image(processed_image):
 
 
 def create_contours_image(image):
+    """Generate image with selected contours
+    @image - image represented as numpy array
+    @return image - image with selected contours as numpy array"""
     img = prepare_image_peak_slicing(image, median_filter=True)
     img_contour = find_pigmented_contour(img)
     img_contour = repair_contour(img_contour)
@@ -826,6 +839,10 @@ def create_contours_image(image):
 
 
 def create_axes_image(image):
+    """Generate image with selected axes
+    @image - image represented as numpy array
+    @return image - image with selected axes as numpy array"""
+    # thresholding
     img = prepare_image_peak_slicing(image, median_filter=True)
 
     img_contour = find_pigmented_contour(img)
@@ -840,17 +857,19 @@ def create_axes_image(image):
 
 
 def clahe_image(image):
+    """Generate image processed by CLAHE algorithm
+    @image - image represented as numpy array
+    @return img_clahe_final - processed image as numpy array"""
+    # convert image to CIELAB colorspace
     img_pre_clahe_lab = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)
-
     l, a, b = cv2.split(img_pre_clahe_lab)
 
-    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-
+    # using CLAHE
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
     l_clahe = clahe.apply(l)
-
     img_l = cv2.merge((l_clahe, a, b))
 
+    # convert to BGR colorspace
     img_clahe_final = cv2.cvtColor(img_l, cv2.COLOR_LAB2BGR)
 
     return img_clahe_final
-

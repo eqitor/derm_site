@@ -12,9 +12,11 @@ urlpatterns = [
     path('success', success, name='success'),
     path('examination_image_for_processing', examination_image_for_processing, name='examination_image_for_processing'),
     path('success_for_processing', success_for_processing, name='success_for_processing'),
+    path('run_processing', run_processing, name='run_processing'),
 
 ]
 
+# adds media folder for debug mode
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)

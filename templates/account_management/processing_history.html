@@ -1,0 +1,49 @@
+{% extends  "../temp.html" %}
+{% load static %}
+
+
+{% block content %}
+<div id="login-form" class="container text-center" style="margin-top: 10%; margin-bottom: 15%;" >
+    {% for date, patient_name, description, image in examinations reversed %}
+
+        <button type="button" class="collapsible">{{ patient_name }}</button>
+        <div class="content">
+            <p>
+                <big>Nazwa: {{ patient_name }}</big>
+            </p>
+
+            <p>
+                Data: {{ date }}
+            </p>
+
+            <p>
+                Opis: {{ description }}
+            </p>
+
+            <img src="{{image}}"  width="150">
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    }
+  });
+}
+</script>
+
+{% endblock %}
