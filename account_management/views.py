@@ -59,7 +59,8 @@ def processing_history(request):
     examinations = []
 
     for examination in ImageProc.objects.filter(user_field=request.user).order_by('created'):
-        examinations_row = [examination.created,
+        examinations_row = [examination.id,
+                            examination.created,
                             examination.patient_name,
                             examination.description,
                             examination.image.url]

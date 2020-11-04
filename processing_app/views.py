@@ -95,12 +95,13 @@ def processing(request):
     request.user.profile.processed_images += 1
     request.user.save()
 
-    return redirect('processing_app:results')
+    return redirect('processing_app:results', request.session['id'])
 
 
-def results(request):
+@login_required
+def results(request, image_id):
     """View shows results of processing."""
-    db_object = ImageProc.objects.get(id=request.session['id'])
+    db_object = ImageProc.objects.get(id=image_id)
 
     context = {
         'id': db_object.id,
@@ -148,7 +149,7 @@ def edit_data(request):
             db_object.patient_name = form.cleaned_data['patient_name']
             db_object.save()
 
-            return redirect('processing_app:results')
+            return redirect('processing_app:results', request.session['id'])
     else:
         form = EditDataForm()
 

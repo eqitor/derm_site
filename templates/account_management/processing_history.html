@@ -4,7 +4,7 @@
 
 {% block content %}
 <div id="login-form" class="container text-center" style="margin-top: 10%; margin-bottom: 15%;" >
-    {% for date, patient_name, description, image in examinations reversed %}
+    {% for id, date, patient_name, description, image in examinations reversed %}
 
         <button type="button" class="collapsible">{{ patient_name }}</button>
         <div class="content">
@@ -20,7 +20,7 @@
                 Opis: {{ description }}
             </p>
 
-            <img src="{{image}}"  width="150">
+            <a href="{% url 'processing_app:results' id %}"><img src="{{image}}"  width="150"></a>
 
         </div>
 

@@ -96,7 +96,8 @@ def success_for_processing(request):
         result = 'złośliwy'
     request.user.profile.classifications += 1
     request.user.save()
-    context = {'result': result}
+    context = {'result': result,
+               'image_id': request.session['id']}
     return render(request, 'classification_app/success_for_processing.html', context)
 
 

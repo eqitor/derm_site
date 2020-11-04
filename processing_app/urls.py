@@ -11,7 +11,7 @@ app_name = 'processing_app'
 urlpatterns = [
     path('image_upload', processing_image_upload_view, name='processing_image_upload'),
     path('image_processing', processing, name='processing'),
-    path('results', results, name='results'),
+    path('results/<int:image_id>', results, name='results'),
     path('edit_data', edit_data, name='edit_data'),
 ]
 
