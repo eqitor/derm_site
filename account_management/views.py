@@ -45,10 +45,11 @@ def register_page(request):
             if form.is_valid():
                 form.save()
                 user = form.cleaned_data.get('username')
-                messages.success(request, 'Pomyślnie utworzono użytkownika {}. Teraz możesz się zalogować!'.format(user))
+                messages.success(request,
+                                 'Pomyślnie utworzono użytkownika {}. Teraz możesz się zalogować!'.format(user))
                 return redirect('account_management:login_page')
 
-        context = {'form':form}
+        context = {'form': form}
         return render(request, 'account_management/register_page.html', context)
 
 
@@ -59,9 +60,9 @@ def processing_history(request):
 
     for examination in ImageProc.objects.filter(user_field=request.user).order_by('created'):
         examinations_row = [examination.created,
-                      examination.patient_name,
-                      examination.description,
-                      examination.image.url]
+                            examination.patient_name,
+                            examination.description,
+                            examination.image.url]
 
         examinations.append(examinations_row)
 
@@ -70,4 +71,12 @@ def processing_history(request):
     }
 
     return render(request, 'account_management/processing_history.html', context)
+
+
+@login_required
+def user_panel(request):
+    """View shows user panel."""
+    context = {}
+    print(request.user.profile.processed_images)
+    return render(request, 'account_management/user_panel.html', context)
 

@@ -3,6 +3,7 @@
     padding: 0;
 }
 
+
 /* NAVBAR */
 
 #nav-bar {
@@ -185,3 +186,25 @@ background-color: #555;
 .not-visible {
     display: none !important;
 }
+
+/* USER PANEL */
+#user-panel-data-container h1 {
+    padding: 10px;
+}
+
+#user-panel-data-container span {
+    color: #008b8b;
+}
+
+#user-panel-data-container p {
+    font-weight: bold;
+}
+
+#user-panel-options-container {
+    text-align: center;
+}
+
+#user-panel-options-container h1, #user-panel-options-container button {
+    padding: 10px;
+}
+

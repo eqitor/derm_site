@@ -92,6 +92,9 @@ def processing(request):
 
     db_object.save()
 
+    request.user.profile.processed_images += 1
+    request.user.save()
+
     return redirect('processing_app:results')
 
 

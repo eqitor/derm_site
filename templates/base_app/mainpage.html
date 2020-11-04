@@ -29,6 +29,7 @@
                     <div class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown">{{ request.user }}</a>
                         <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{% url 'account_management:user_panel' %}">Panel użytkownika</a>
                             <a class="dropdown-item" href="{% url 'account_management:processing_history' %}">Przetworzone obrazy</a>
                             <a class="dropdown-item" href="{% url 'account_management:logout_user' %}">Wyloguj</a>
                         </div>

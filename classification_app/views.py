@@ -81,6 +81,8 @@ def success(request):
         result = 'łagodny'
     elif request.session["classification_result"] == 'malignant':
         result = 'złośliwy'
+    request.user.profile.classifications += 1
+    request.user.save()
     context = {'result': result}
     return render(request, 'classification_app/success.html', context)
 
@@ -92,6 +94,8 @@ def success_for_processing(request):
         result = 'łagodny'
     elif request.session["classification_result"] == 'malignant':
         result = 'złośliwy'
+    request.user.profile.classifications += 1
+    request.user.save()
     context = {'result': result}
     return render(request, 'classification_app/success_for_processing.html', context)
 

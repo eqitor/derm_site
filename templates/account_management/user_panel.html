@@ -1,0 +1,25 @@
+{% extends  "../temp.html" %}
+{% load static %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div id="user-panel-data-container" class="col-md-5 col-sm-12 offset-md-1">
+            <h1>Witaj <span>{{request.user}}!</span></h1>
+            <p>Email: <span>{{request.user.email}}</span></p>
+            <p>Data założenia konta: <span>{{request.user.date_joined}}</span> </p>
+            <p>Ostatnia aktywność: <span>{{request.user.last_login}}</span></p>
+            <p>Liczba przetworzonych zdjęć: <span>{{request.user.profile.processed_images}}</span></p>
+            <p>Liczba klasyfikacji: <span>{{request.user.profile.classifications}}</span></p>
+        </div>
+        <div id="user-panel-options-container" class="col-md-5 col-sm-12 justify-content-center">
+            <h1>Opcje użytkownika</h1>
+            <a href="{% url 'account_management:processing_history' %}">
+                <button type="button" class="btn btn-secondary btn-lg btn-block">Przejdź do przetworzonych zdjęć</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
