@@ -14,25 +14,28 @@ import image_processing as ip
 ENABLE_CLASSIFICATION = False  # if True, classification function is enabled
 
 
-def prepare_svm_classifier():
+def prepare_svm_classifier(force_learning=False):
     """Function creates new classifier and input standardizer, or loads old one. Function creates simple interface
-    for classifier selection and saves new classifier and standardizer as joblib file."""
+    for classifier selection and saves new classifier and standardizer as joblib file.
+    @force_learning - omits file loading and creates new instances"""
     global ENABLE_CLASSIFICATION
+    ENABLE_CLASSIFICATION = False
     print("Checking for SVM classifier...")
 
-    # Files loading
-    try:
-        svm = load('./static/svm.joblib')
-        svm_features = load('./static/svm_features.joblib')
-        standardizer = load('./static/svm_stdsc.joblib')
-    except FileNotFoundError:
-        print(f"Cannot load classifier, features or scaler, creating new one...")
-    else:
-        print("SVM loaded successfully!")
-        print(f"SVM info: {svm.get_params()}")
-        print(f"Usef features: {svm_features}")
-        ENABLE_CLASSIFICATION = True
-        return
+    if not force_learning:
+        # Files loading
+        try:
+            svm = load('./static/svm.joblib')
+            svm_features = load('./static/svm_features.joblib')
+            standardizer = load('./static/svm_stdsc.joblib')
+        except FileNotFoundError:
+            print(f"Cannot load classifier, features or scaler, creating new one...")
+        else:
+            print("SVM loaded successfully!")
+            print(f"SVM info: {svm.get_params()}")
+            print(f"Usef features: {svm_features}")
+            ENABLE_CLASSIFICATION = True
+            return
 
     # New classifier teaching procedure
     column_names = ['A_p', 'A_c', 'solidity', 'extent', 'equivalent diameter', 'circularity', 'p_p', 'b_p/a_p',
@@ -127,6 +130,8 @@ def prepare_svm_classifier():
     dump(best_svm, r"./static/svm.joblib")
     dump(best_features, r"./static/svm_features.joblib")
     dump(best_stdsc, r"./static/svm_stdsc.joblib")
+
+    return best_score, best_features
 
 
 def classify_image(img):

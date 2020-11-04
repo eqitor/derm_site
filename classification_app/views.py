@@ -9,7 +9,7 @@ import numpy as np
 from .forms import *
 from processing_app.models import ImageProc
 
-from .classification_backend import classify_image, ENABLE_CLASSIFICATION
+from .classification_backend import classify_image, prepare_svm_classifier, ENABLE_CLASSIFICATION
 from image_processing import get_processing_image
 
 
@@ -20,7 +20,7 @@ def look_for_enable_classification(fun):
             rv = fun(*args, **kwargs)
             return rv
         else:
-            return HttpResponse("Classification unavailable.")
+            return render(args[0], 'classification_app/classification_unavailable.html', {} )
 
     return wrapper
 
@@ -116,5 +116,13 @@ def run_processing(request):
 
     db_object.classification_result = request.session['classification_result']
     db_object.save()
-    print('redirection to success ' + request.session['classification_result'])
     return redirect('classification_app:success')
+
+
+def classifier_settings(request):
+    """Makes classifier evaluation"""
+    best_score, best_features = prepare_svm_classifier(force_learning=True)
+    context = {'best_score': best_score*100,
+               'best_features': best_features,}
+    return render(request, 'classification_app/classifier_settings.html', context)
+

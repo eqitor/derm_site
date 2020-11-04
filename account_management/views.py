@@ -60,7 +60,7 @@ def processing_history(request):
 
     for examination in ImageProc.objects.filter(user_field=request.user).order_by('created'):
         examinations_row = [examination.id,
-                            examination.created,
+                            str(examination.created)[:16],
                             examination.patient_name,
                             examination.description,
                             examination.image.url]
@@ -78,6 +78,5 @@ def processing_history(request):
 def user_panel(request):
     """View shows user panel."""
     context = {}
-    print(request.user.profile.processed_images)
     return render(request, 'account_management/user_panel.html', context)
 

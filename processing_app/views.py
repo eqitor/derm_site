@@ -103,6 +103,10 @@ def results(request, image_id):
     """View shows results of processing."""
     db_object = ImageProc.objects.get(id=image_id)
 
+    # redirect if user isn't owner of image
+    if db_object.user_field != request.user:
+        return redirect('base_app:restricted')
+
     context = {
         'id': db_object.id,
         'date': str(db_object.created),

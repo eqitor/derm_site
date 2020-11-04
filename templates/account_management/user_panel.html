@@ -18,6 +18,12 @@
             <a href="{% url 'account_management:processing_history' %}">
                 <button type="button" class="btn btn-secondary btn-lg btn-block">Przejdź do przetworzonych zdjęć</button>
             </a>
+
+            {% if user.is_superuser %}
+            <a href="{% url 'classification_app:classifier_settings' %}">
+                <button type="button" class="btn btn-secondary btn-lg btn-block">Ustawienia klasyfikatora</button>
+            </a>
+            {% endif %}
         </div>
     </div>
 </div>

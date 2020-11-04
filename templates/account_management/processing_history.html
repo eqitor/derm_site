@@ -4,28 +4,40 @@
 
 {% block content %}
 <div id="login-form" class="container text-center" style="margin-top: 10%; margin-bottom: 15%;" >
+
+    {% if not examinations %}
+    <h1>Brak wpisów.</h1>
+    <a href="{% url 'processing_app:processing_image_upload' %}">
+                <button type="button" class="btn btn-secondary btn-lg">Przetwórz pierwszy obraz</button>
+            </a>
+    {% else %}
     {% for id, date, patient_name, description, image in examinations reversed %}
 
         <button type="button" class="collapsible">{{ patient_name }}</button>
         <div class="content">
-            <p>
-                <big>Nazwa: {{ patient_name }}</big>
-            </p>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5 offset-md-1 col-sm-12">
+                        <p>
+                            <big>Nazwa: {{ patient_name }}</big>
+                        </p>
 
-            <p>
-                Data: {{ date }}
-            </p>
+                        <p>
+                            Data: {{ date }}
+                        </p>
 
-            <p>
-                Opis: {{ description }}
-            </p>
-
-            <a href="{% url 'processing_app:results' id %}"><img src="{{image}}"  width="150"></a>
-
+                        <p>
+                            Opis: {{ description }}
+                        </p>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                        <a href="{% url 'processing_app:results' id %}"><img src="{{image}}"  width="150"></a>
+                    </div>
+                </div>
+            </div>
         </div>
-
     {% endfor %}
-
+    {% endif %}
 </div>
 
 

@@ -1,0 +1,18 @@
+{% extends  "../temp.html" %}
+{% load static %}
+
+
+{% block content %}
+<div id="login-form" class="container text-center" style="margin-top: 10%; margin-bottom: 15%;" >
+
+    <img src="{% static "images/logo.png" %}" alt="DermSite" width="150">
+    <h1>Funkcja klasyfikacji jest chwilowo niemożliwa</h1>
+
+    <h2>Przepraszamy za utrudnienia.</h2>
+    <a class="btn btn-primary" href="{% url 'base_app:mainpage' %}">Wróć do strony głównej</a>
+
+
+</div>
+
+
+{% endblock %}

@@ -13,6 +13,7 @@ urlpatterns = [
     path('examination_image_for_processing', examination_image_for_processing, name='examination_image_for_processing'),
     path('success_for_processing', success_for_processing, name='success_for_processing'),
     path('run_processing', run_processing, name='run_processing'),
+    path('classifier_settings', classifier_settings, name='classifier_settings'),
 
 ]
 
