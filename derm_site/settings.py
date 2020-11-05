@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'account_management',
     'classification_app',
     'processing_app',
+    'django_cleanup',
 ]
 
 MIDDLEWARE = [

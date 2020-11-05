@@ -8,7 +8,6 @@ from joblib import dump, load
 
 import image_processing as ip
 
-
 # Classification settings
 
 ENABLE_CLASSIFICATION = False  # if True, classification function is enabled
@@ -151,3 +150,4 @@ def classify_image(img):
     classification_result = classifier.predict(quantification_results_std)
 
     return classification_result
+

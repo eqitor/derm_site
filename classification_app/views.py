@@ -83,6 +83,10 @@ def success(request):
         result = 'złośliwy'
     request.user.profile.classifications += 1
     request.user.save()
+
+    db_object = Examination.objects.get(id=request.session['id'])
+    db_object.delete()
+
     context = {'result': result}
     return render(request, 'classification_app/success.html', context)
 
@@ -125,4 +129,3 @@ def classifier_settings(request):
     context = {'best_score': best_score*100,
                'best_features': best_features,}
     return render(request, 'classification_app/classifier_settings.html', context)
-

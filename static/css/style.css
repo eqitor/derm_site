@@ -3,7 +3,6 @@
     padding: 0;
 }
 
-
 /* NAVBAR */
 
 #nav-bar {
@@ -204,7 +203,28 @@ background-color: #555;
     text-align: center;
 }
 
-#user-panel-options-container h1, #user-panel-options-container button {
+#user-panel-options-container h1,  {
     padding: 10px;
 }
 
+#user-panel-options-container button {
+    padding: 10px;
+    margin: 5px;
+}
+
+
+#page-container {
+  position: relative;
+  min-height: 100vh;
+}
+
+#content-wrap {
+  padding-bottom: 2.5rem;    /* Footer height */
+}
+
+#footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 3.5rem;            /* Footer height */
+}
