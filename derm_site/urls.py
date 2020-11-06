@@ -24,7 +24,7 @@ from account_management import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('base_app.urls')),
-    path('', include('account_management.urls')),
+    path('account_management/', include('account_management.urls')),
     path('classification/', include('classification_app.urls')),
     path('processing/', include('processing_app.urls')),
 ]

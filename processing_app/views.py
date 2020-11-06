@@ -109,7 +109,7 @@ def results(request, image_id):
 
     context = {
         'id': db_object.id,
-        'date': str(db_object.created),
+        'date': str(db_object.created)[0:16],
         'patient_name': db_object.patient_name,
         'description': db_object.description,
         'classification_result': db_object.classification_result,

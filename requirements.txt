@@ -3,6 +3,7 @@ certifi==2020.6.20
 cycler==0.10.0
 decorator==4.4.2
 Django==3.1
+django-cleanup==5.1.0
 django-environ==0.4.5
 imageio==2.9.0
 joblib==0.17.0

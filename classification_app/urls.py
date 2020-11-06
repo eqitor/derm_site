@@ -8,7 +8,7 @@ from .views import *
 app_name = 'classification_app'
 
 urlpatterns = [
-    path('image_upload', examination_image_view, name='image_upload'),
+    path('examination_image', examination_image_view, name='image_upload'),
     path('success', success, name='success'),
     path('examination_image_for_processing', examination_image_for_processing, name='examination_image_for_processing'),
     path('success_for_processing', success_for_processing, name='success_for_processing'),

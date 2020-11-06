@@ -1,3 +1,5 @@
+from django.conf import settings
+
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
@@ -8,17 +10,16 @@ from joblib import dump, load
 
 import image_processing as ip
 
-# Classification settings
 
-ENABLE_CLASSIFICATION = False  # if True, classification function is enabled
+
+
 
 
 def prepare_svm_classifier(force_learning=False):
     """Function creates new classifier and input standardizer, or loads old one. Function creates simple interface
     for classifier selection and saves new classifier and standardizer as joblib file.
     @force_learning - omits file loading and creates new instances"""
-    global ENABLE_CLASSIFICATION
-    ENABLE_CLASSIFICATION = False
+    settings.ENABLE_CLASSIFICATION = False
     print("Checking for SVM classifier...")
 
     if not force_learning:
@@ -33,7 +34,7 @@ def prepare_svm_classifier(force_learning=False):
             print("SVM loaded successfully!")
             print(f"SVM info: {svm.get_params()}")
             print(f"Usef features: {svm_features}")
-            ENABLE_CLASSIFICATION = True
+            settings.ENABLE_CLASSIFICATION = True
             return
 
     # New classifier teaching procedure
@@ -50,7 +51,7 @@ def prepare_svm_classifier(force_learning=False):
         data = pd.read_csv('./static/datasets/dataset.csv', delimiter=';', names=column_names)
     except FileNotFoundError:
         print("Dataset for SVM not found!")
-        ENABLE_CLASSIFICATION = False
+        settings.ENABLE_CLASSIFICATION = False
         return
 
     # y = classes, X = attributes
@@ -85,6 +86,7 @@ def prepare_svm_classifier(force_learning=False):
     # NOTE: parameters ranges was selected experimentally
     for gamma in np.arange(66 - 5, 66 + 5, 1):
         for C in np.arange(6 - 5, 6 + 5, 1):
+            print(settings.ENABLE_CLASSIFICATION)
 
             rkf = RepeatedKFold(n_splits=2, n_repeats=5)  # repeated cross validation object
 
@@ -117,7 +119,7 @@ def prepare_svm_classifier(force_learning=False):
                     best_score = svm.score(X_test, y_test)
                     best_features = zipped_list_columns[:number_of_features]
 
-    ENABLE_CLASSIFICATION = True
+    settings.ENABLE_CLASSIFICATION = True
 
     print(f"Classificator created, score: {best_score}")
     print(f"Used features: {best_features}")
@@ -150,4 +152,6 @@ def classify_image(img):
     classification_result = classifier.predict(quantification_results_std)
 
     return classification_result
+
+
 

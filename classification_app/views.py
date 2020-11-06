@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.conf import settings
 
 from PIL import Image
 import numpy as np
@@ -9,18 +10,18 @@ import numpy as np
 from .forms import *
 from processing_app.models import ImageProc
 
-from .classification_backend import classify_image, prepare_svm_classifier, ENABLE_CLASSIFICATION
+from .classification_backend import classify_image, prepare_svm_classifier
 from image_processing import get_processing_image
 
 
 def look_for_enable_classification(fun):
     """Decorator that checks if classification function is enabled before running other function"""
     def wrapper(*args, **kwargs):
-        if ENABLE_CLASSIFICATION:
+        if settings.ENABLE_CLASSIFICATION:
             rv = fun(*args, **kwargs)
             return rv
         else:
-            return render(args[0], 'classification_app/classification_unavailable.html', {} )
+            return render(args[0], 'classification_app/classification_unavailable.html', {})
 
     return wrapper
 
@@ -38,7 +39,6 @@ def examination_image_view(request):
 
             # saving image to new created db object
             db_object.image = request.FILES['image']
-            db_object.user_field = request.user
             db_object.save()
 
             # saving image data in session
@@ -81,8 +81,10 @@ def success(request):
         result = 'łagodny'
     elif request.session["classification_result"] == 'malignant':
         result = 'złośliwy'
-    request.user.profile.classifications += 1
-    request.user.save()
+
+    if request.user.is_authenticated:
+        request.user.profile.classifications += 1
+        request.user.save()
 
     db_object = Examination.objects.get(id=request.session['id'])
     db_object.delete()
@@ -127,5 +129,5 @@ def classifier_settings(request):
     """Makes classifier evaluation"""
     best_score, best_features = prepare_svm_classifier(force_learning=True)
     context = {'best_score': best_score*100,
-               'best_features': best_features,}
+               'best_features': best_features, }
     return render(request, 'classification_app/classifier_settings.html', context)
