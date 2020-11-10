@@ -8,37 +8,50 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-3 col-sm-12">
-            <figure>
-                <img src="{{image}}" class="img-fluid" alt="Oryginał">
-                <figcaption>Oryginał</figcaption>
-            </figure>
+        <div class="col-md-3 col-sm-12 justify-content-center">
 
-            <figure>
-                <img src="{{image_clahe}}" class="img-fluid" alt="Filtr CLAHE">
-                <figcaption>Filtr CLAHE</figcaption>
-            </figure>
+            <div class="text-center border d-flex">
+                <figure class="mx-auto my-auto">
+                    <img  src="{{image}}"  width="150" alt="Brak zdjęcia">
+                    <figcaption>Oryginał</figcaption>
+                </figure>
+            </div>
 
-            <figure>
-                <img src="{{image_axes}}" class="img-fluid" alt="Osie">
-                <figcaption>Osie</figcaption>
-            </figure>
-        </div>
+            <div class="text-center border d-flex">
+                <figure class="mx-auto my-auto">
+                    <img src="{{image_clahe}}"  width="150" alt="Brak zdjęcia">
+                    <figcaption>Filtr CLAHE</figcaption>
+                </figure>
+            </div>
 
-        <div class="col-md-3 col-sm-12">
-            <figure>
-                <img src="{{image_contours}}" class="img-fluid" alt="Kontury">
-                <figcaption>Kontury</figcaption>
-            </figure>
-
-            <figure>
-                <img src="{{image_illumination_removed}}" class="img-fluid" alt="Brak iluminacji">
-                <figcaption>Brak iluminacji</figcaption>
-            </figure>
+            <div class="text-center border d-flex">
+                <figure class="mx-auto my-auto">
+                    <img src="{{image_axes}}"  width="150" alt="Brak zdjęcia">
+                    <figcaption>Wykryte osie</figcaption>
+                </figure>
+            </div>
 
         </div>
 
-        <div class="col-md-6 col-sm-12">
+        <div class="col-md-3 col-sm-12 justify-content-center">
+
+            <div class="text-center border d-flex">
+                <figure class="mx-auto my-auto">
+                    <img  src="{{image_contours}}"  width="150" alt="Brak zdjęcia">
+                    <figcaption>Wykryte kontury</figcaption>
+                </figure>
+            </div>
+
+            <div class="text-center border d-flex">
+                <figure class="mx-auto my-auto">
+                    <img src="{{image_illumination_removed}}"  width="150" alt="Brak zdjęcia">
+                    <figcaption>Usunięty połysk</figcaption>
+                </figure>
+            </div>
+
+        </div>
+
+        <div id="parameters-container" class="col-md-6 col-sm-12 justify-content-center">
             <h1>Badanie nr. {{id}}</h1>
             <ul>
                 <li>Pacjent:  {{patient_name}}</li>
