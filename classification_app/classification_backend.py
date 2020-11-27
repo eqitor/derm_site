@@ -86,7 +86,6 @@ def prepare_svm_classifier(force_learning=False):
     # NOTE: parameters ranges was selected experimentally
     for gamma in np.arange(66 - 5, 66 + 5, 1):
         for C in np.arange(6 - 5, 6 + 5, 1):
-            print(settings.ENABLE_CLASSIFICATION)
 
             rkf = RepeatedKFold(n_splits=2, n_repeats=5)  # repeated cross validation object
 
