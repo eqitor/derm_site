@@ -47,13 +47,13 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-7. Create admin account for website:
+8. Create admin account for website:
 
 ```bash
 python manage.py createsuperuser
 ```
 
-8. Run server:
+9. Run server:
 
 ```bash
 python manage.py runserver
