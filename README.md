@@ -24,6 +24,7 @@ Windows
 ```bash
 source\Scripts\activate.bat
 ```
+In these examples source is virtual enviroment directory.
 
 5. Install all required packages using requirements.txt file:
 
